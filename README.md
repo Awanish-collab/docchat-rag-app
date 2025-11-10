@@ -130,22 +130,6 @@ docchat-rag-app/
 | **Chat Screen**      | `chat_component.py`      | Ask questions, get LLM responses |
 | **Analytics Screen** | `analytics_component.py` | Visualize usage analytics        |
 
-### Example Navigation (`app.py`)
-
-```python
-import streamlit as st
-from components import upload_component, chat_component, analytics_component
-
-st.sidebar.title("🧠 DocChat RAG App")
-page = st.sidebar.radio("Navigate", ["Upload Document", "Chat with Doc", "Analytics Dashboard"])
-
-if page == "Upload Document":
-    upload_component.render()
-elif page == "Chat with Doc":
-    chat_component.render()
-else:
-    analytics_component.render()
-```
 
 ---
 
