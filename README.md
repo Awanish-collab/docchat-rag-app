@@ -281,7 +281,7 @@ If you liked this project:
 * 🧠 Fork it and build your own version
 * 💬 Share feedback or raise an issue
 
-> *Built with 💙 using Gemini, Pinecone, Supabase, LangChain, FastAPI & Streamlit.*
+> *Built with 💙 using Python, Langchain, Gemini, Pinecone, Supabase, LangChain, FastAPI & Streamlit.*
 
----
+
 
