@@ -1,5 +1,4 @@
 
----
 
 # 🧠 DocChat RAG App (Gemini + Pinecone + Supabase + FastAPI + Streamlit)
 
@@ -286,4 +285,3 @@ If you liked this project:
 
 ---
 
-Would you like me to **generate this as a `.md` file** for download (so you can just upload it to GitHub directly)?
