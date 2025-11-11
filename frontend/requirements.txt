@@ -1,0 +1,17 @@
+# UI Core
+streamlit
+
+# API Communication
+requests
+python-dotenv            # for managing backend URL
+
+# Analytics / Visualization
+plotly                   # for charts/graphs
+pandas                   # for data table visualization
+matplotlib               # optional, for additional chart types
+altair                   # built-in with Streamlit but good for complex visualizations
+
+
+# Optional (for clean UI)
+streamlit-option-menu    # side menu for chat/dashboard navigation
+streamlit-lottie         # animated elements

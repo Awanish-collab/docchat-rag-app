@@ -1,0 +1,27 @@
+# Core API
+fastapi
+uvicorn
+
+# LLM / RAG Core
+langchain
+langchain-community
+langchain-core
+langchain-google-genai   # for Gemini embedding & generation
+google-generativeai      # Gemini direct API
+
+# Vector DB / Storage
+supabase                 # if using Supabase as DB
+postgrest                # helps interact with Postgres APIs
+pgvector                 # if using vector store with Postgres
+SQLAlchemy               # ORM for SQL/Postgres
+psycopg2-binary          # Postgres connector
+pinecone
+
+
+# Utilities
+requests
+python-dotenv            # for env variable management
+pydantic                 # data validation for FastAPI
+tqdm                     # progress bar if you add data ingestion
+pandas                   # for any data processing
+numpy                    # basic numeric ops
