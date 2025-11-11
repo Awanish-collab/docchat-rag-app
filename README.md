@@ -59,65 +59,93 @@ This system is fully **containerized (Docker)**, **deployable (Render / Hugging 
 ## 📂 Folder Structure
 
 ```
+
 docchat-rag-app/
 │
-├── backend/
-│   ├── main.py                    # FastAPI entry point
-│   ├── config.py                  # .env loader
-│   ├── requirements.txt           # Dependencies
+├── 📁 backend/                                 # FastAPI backend service
+│   ├── main.py                                 # FastAPI app entrypoint
+│   ├── config.py                               # Load environment variables
+│   ├── requirements.txt                        # Backend dependencies
 │   │
-│   ├── routes/
-│   │   ├── upload_route.py        # /upload endpoint
-│   │   ├── query_route.py         # /query endpoint
-│   │   └── dashboard_route.py     # /dashboard endpoint
+│   ├── 📁 routes/                              # All API routes (organized by feature)
+│   │   ├── upload_route.py                     # /upload endpoint
+│   │   ├── query_route.py                      # /query endpoint
+│   │   └── dashboard_route.py                  # /dashboard endpoint
 │   │
-│   ├── utils/
-│   │   ├── pdf_loader.py          # PDF extraction
-│   │   ├── text_splitter.py       # Chunking (LangChain Text Splitter)
-│   │   ├── embedding.py           # Gemini Embedding + Pinecone storage
-│   │   ├── retriever.py           # Retrieve Top-k docs
-│   │   ├── llm_response.py        # Gemini Flash for final answer
-│   │   └── logger.py              # Logging helper
+│   ├── 📁 utils/                               # Helper modules
+│   │   ├── pdf_loader.py                       # PDF text extraction
+│   │   ├── text_splitter.py                    # Chunking via LangChain TextSplitter
+│   │   ├── embedding.py                        # Gemini Embedding + Pinecone storage
+│   │   ├── retriever.py                        # Pinecone retrieval (Top-k)
+│   │   ├── llm_response.py                     # Gemini Flash LLM for final answers
+│   │   ├── logger.py                           # Custom logging
+│   │   └── validators.py                       # Input validation utils
 │   │
-│   ├── db/
-│   │   ├── supabase_client.py     # Real-time query logs
-│   │   └── schema.sql             # DB initialization
+│   ├── 📁 db/                                  # Database layer
+│   │   ├── supabase_client.py                  # Supabase client for analytics
+│   │   ├── schema.sql                          # SQL for initializing tables
+│   │   └── models.py                           # Pydantic models for DB operations
 │   │
-│   ├── tests/
-│   │   └── test_api.py            # API tests
+│   ├── 📁 tests/                               # Backend testing
+│   │   ├── test_api.py                         # Test upload & query routes
+│   │   └── test_embeddings.py                  # Test embedding pipeline
 │   │
-│   ├── Dockerfile
+│   ├── Dockerfile                              # Backend container config
+│   ├── start.sh                                # Shell script for starting server
 │   └── README.md
 │
-├── frontend/
-│   ├── app.py                     # Main Streamlit app (navigation)
+│
+├── 📁 frontend/                                # Streamlit frontend dashboard
+│   ├── app.py                                 # Main Streamlit entrypoint
+│   ├── requirements.txt                       # Frontend dependencies
 │   │
-│   ├── components/
-│   │   ├── upload_component.py    # Upload PDF UI
-│   │   ├── chat_component.py      # Chat interface
-│   │   └── analytics_component.py # Analytics dashboard
+│   ├── 📁 components/
+│   │   ├── upload_component.py                # PDF upload + processing
+│   │   ├── chat_component.py                  # Chat interface (QA with LLM)
+│   │   └── analytics_component.py             # Analytics dashboard (charts, trends)
 │   │
-│   ├── assets/
+│   ├── 📁 services/                           # For calling backend APIs
+│   │   ├── api_client.py                      # Handles API requests to FastAPI
+│   │   └── helpers.py                         # Common frontend utilities
+│   │
+│   ├── 📁 assets/                             # Static files
 │   │   ├── logo.png
-│   │   └── styles.css
+│   │   ├── styles.css
+│   │   └── favicon.ico
 │   │
-│   ├── Dockerfile
+│   ├── 📁 tests/
+│   │   └── test_ui_components.py
+│   │
+│   ├── Dockerfile                             # Frontend container config
+│   ├── start.sh                               # Frontend launch script
 │   └── README.md
 │
-├── data/
-│   ├── uploads/                   # Uploaded PDFs
-│   ├── chunks/                    # Temporary text chunks
-│   └── logs/                      # Debug / logs
 │
-├── .github/
-│   └── workflows/
-│       └── deploy.yml             # GitHub Actions CI/CD
+├── 📁 data/                                   # Data storage & logs
+│   ├── uploads/                               # Raw uploaded PDFs
+│   ├── chunks/                                # Chunked text files
+│   ├── logs/                                  # Application logs
+│   └── analytics/                             # Exported metrics
 │
-├── docker-compose.yml             # Orchestrates backend + frontend
-├── .env                           # Environment variables
-├── .gitignore
-├── LICENSE
-└── README.md
+│
+├── 📁 configs/                                # Configuration & credentials
+│   ├── .env.example                           # Example environment file
+│   ├── credentials_template.json              # Template for API keys
+│   └── logging_config.yaml                    # Central logging configuration
+│
+│
+├── 📁 .github/
+│   └── 📁 workflows/
+│       └── deploy.yml                         # GitHub Actions for CI/CD (Render)
+│
+│
+├── docker-compose.yml                         # Compose file for backend + frontend
+├── .env                                       # Actual environment variables (not committed)
+├── .gitignore                                 # Ignore sensitive & build files
+├── LICENSE                                    # MIT License
+├── README.md                                  # Project documentation
+└── setup.md                                   # Developer setup instructions
+
 ```
 
 ---
