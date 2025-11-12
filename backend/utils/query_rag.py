@@ -34,4 +34,4 @@ def rag_query_run(query, session_id="session_1"):
 
 # Local test
 if __name__ == "__main__":
-    rag_query_run("What is machine learning?")
+    rag_query_run("Who is prime minister of india?")

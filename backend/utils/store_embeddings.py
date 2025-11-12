@@ -29,7 +29,7 @@ def store_embeddings_in_pinecone(text):
 def generate_unique_uuid():
     return str(uuid.uuid4())
 
-# Local test
+'''# Local test
 if __name__ == "__main__":
     sample_text = """
     1. Data science is the study of data to extract meaningful insights.
@@ -134,4 +134,4 @@ if __name__ == "__main__":
     100. Its a powerful blend of science, art, and strategy.
     """
     
-    store_embeddings_in_pinecone(sample_text)
+    store_embeddings_in_pinecone(sample_text)'''
