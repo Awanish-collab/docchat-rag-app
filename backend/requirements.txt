@@ -25,3 +25,6 @@ pydantic                 # data validation for FastAPI
 tqdm                     # progress bar if you add data ingestion
 pandas                   # for any data processing
 numpy                    # basic numeric ops
+
+python-multipart
+PyPDF2

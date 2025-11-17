@@ -1,8 +1,10 @@
 # backend/utils/store_embeddings.py
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from google.genai import types
-from common import index, genai_client, EMBED_MODEL
+from .common import index, genai_client, EMBED_MODEL
 import uuid
+from .common import supabase
+import datetime
 
 CHUNK_SIZE = 400
 CHUNK_OVERLAP = 50
@@ -13,21 +15,66 @@ def chunk_text(text):
     )
     return splitter.split_text(text)
 
-def store_embeddings_in_pinecone(text):
+def generate_unique_uuid():
+    return str(uuid.uuid4())
+
+def store_embeddings_in_pinecone(text, session_id, file_name, num_pages, uploaded_by="user_1"):
+
+    doc_id = generate_unique_uuid()
     chunks = chunk_text(text)
+
     for i, chunk in enumerate(chunks):
-        doc_id = generate_unique_uuid()
-        emb = genai_client.models.embed_content(
+
+        vector_id = f"{doc_id}-{i}"
+
+        # --- Generate embedding (no token usage returned by Gemini) ---
+        emb_response = genai_client.models.embed_content(
             model=EMBED_MODEL,
             contents=chunk,
             config=types.EmbedContentConfig(output_dimensionality=1536)
-        ).embeddings[0].values
-        index.upsert(vectors=[(f"{doc_id}", emb, {"text": chunk})])
-        print(f"Index Inserted {i}")
-    print(f"✅ Stored {len(chunks)} chunks for {doc_id}")
+        )
 
-def generate_unique_uuid():
-    return str(uuid.uuid4())
+        emb = emb_response.embeddings[0].values
+
+        # --- Estimate embedding tokens ---
+        estimated_tokens = max(1, int(len(chunk) / 4))  # ~4 chars = 1 token
+
+        # --- Insert into pinecone ---
+        index.upsert(vectors=[
+            (
+                vector_id,
+                emb,
+                {
+                    "text": chunk,
+                    "session_id": session_id,
+                    "doc_id": doc_id,
+                    "file_name": file_name,
+                    "chunk_index": i,
+                }
+            )
+        ])
+
+        print(f"Inserted Chunk {i} → Vector ID: {vector_id}")
+
+        # --- Log token usage manually ---
+        supabase.rpc("log_embedding_usage", {
+            "token_count": estimated_tokens
+        }).execute()
+
+    # --- Log upload in supabase ---
+    supabase.table("uploads").insert({
+        "filename": file_name,
+        "uploaded_by": uploaded_by,
+        "num_pages": num_pages,
+        "doc_id": doc_id,
+        "created_at": datetime.datetime.now().isoformat()
+    }).execute()
+
+    supabase.rpc("increment_uploads").execute()
+
+    print(f"Stored {len(chunks)} chunks for document → {doc_id}")
+
+
 
 '''# Local test
 if __name__ == "__main__":
@@ -134,4 +181,4 @@ if __name__ == "__main__":
     100. Its a powerful blend of science, art, and strategy.
     """
     
-    store_embeddings_in_pinecone(sample_text)'''
+    store_embeddings_in_pinecone(sample_text, "Session_1)'''
