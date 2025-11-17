@@ -33,14 +33,17 @@ async def upload_document(file: UploadFile, session_id: str = Form(...)):
     if not file.filename.endswith('.pdf'):
         raise HTTPException(status_code=400, detail="Only PDF files are allowed")
     
+    # 2️⃣ Get actual file name
+    file_name = file.filename 
+
     # Extract text from uploaded file
-    pdf_text = extract_text_from_upload(file)
+    pdf_text, num_pages = extract_text_from_upload(file)
     
     if not pdf_text.strip():
         raise HTTPException(status_code=400, detail="No text found in PDF")
     
     # Store embeddings
-    store_embeddings_in_pinecone(pdf_text, session_id)
+    store_embeddings_in_pinecone(pdf_text, session_id, file_name, num_pages)
     
     return {
         "status": "success", 
